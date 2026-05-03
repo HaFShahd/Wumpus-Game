@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wumpus World — Logic Agent</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="scanline"></div>
+  <div class="noise"></div>
+
+  <header>
+    <div class="logo">
+      <span class="logo-icon">⚠</span>
+      <div>
+        <h1>WUMPUS WORLD</h1>
+        <p class="subtitle">Propositional Logic Navigation Agent</p>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="status-pill" id="agent-status">IDLE</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: Controls -->
+    <aside class="panel panel-controls">
+      <h2 class="panel-title">⚙ CONFIG</h2>
+
+      <div class="control-group">
+        <label>Grid Rows</label>
+        <div class="num-input">
+          <button onclick="adj('rows',-1)">−</button>
+          <span id="val-rows">4</span>
+          <button onclick="adj('rows',1)">+</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Grid Cols</label>
+        <div class="num-input">
+          <button onclick="adj('cols',-1)">−</button>
+          <span id="val-cols">4</span>
+          <button onclick="adj('cols',1)">+</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Pit Count</label>
+        <div class="num-input">
+          <button onclick="adj('pits',-1)">−</button>
+          <span id="val-pits">3</span>
+          <button onclick="adj('pits',1)">+</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Speed (ms)</label>
+        <input type="range" id="speed" min="100" max="2000" value="600" step="100">
+        <span id="speed-val">600ms</span>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btn-init" onclick="initGame()">▶ NEW GAME</button>
+        <button class="btn btn-secondary" id="btn-step" onclick="stepAgent()" disabled>STEP</button>
+        <button class="btn btn-accent" id="btn-auto" onclick="toggleAuto()" disabled>AUTO RUN</button>
+      </div>
+
+      <div class="legend">
+        <h3>LEGEND</h3>
+        <div class="legend-item"><span class="leg agent">A</span> Agent</div>
+        <div class="legend-item"><span class="leg wumpus">W</span> Wumpus</div>
+        <div class="legend-item"><span class="leg pit">P</span> Pit</div>
+        <div class="legend-item"><span class="leg gold">G</span> Gold</div>
+        <div class="legend-item"><span class="leg safe-k">✓</span> Known Safe</div>
+        <div class="legend-item"><span class="leg danger-k">✗</span> Known Danger</div>
+        <div class="legend-item"><span class="leg visited">·</span> Visited</div>
+      </div>
+
+      <div class="score-board">
+        <h3>STATS</h3>
+        <div class="stat"><span>Steps</span><span id="stat-steps">0</span></div>
+        <div class="stat"><span>Score</span><span id="stat-score">0</span></div>
+        <div class="stat"><span>KB Facts</span><span id="stat-kb">0</span></div>
+        <div class="stat"><span>Safe Inferred</span><span id="stat-safe">0</span></div>
+      </div>
+    </aside>
+
+    <!-- CENTER: Grid -->
+    <section class="panel panel-grid">
+      <h2 class="panel-title">🗺 WORLD</h2>
+      <div id="grid-container">
+        <div class="placeholder">Configure and start a new game →</div>
+      </div>
+      <div id="game-message"></div>
+    </section>
+
+    <!-- RIGHT: KB / Log -->
+    <aside class="panel panel-log">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('log')">📋 LOG</button>
+        <button class="tab" onclick="switchTab('kb')">🧠 KB</button>
+        <button class="tab" onclick="switchTab('percepts')">👁 PERCEPTS</button>
+      </div>
+
+      <div id="tab-log" class="tab-content active">
+        <div id="log-entries"></div>
+      </div>
+      <div id="tab-kb" class="tab-content">
+        <div id="kb-entries"></div>
+      </div>
+      <div id="tab-percepts" class="tab-content">
+        <div id="percept-entries"></div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="logic.js"></script>
+  <script src="agent.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
